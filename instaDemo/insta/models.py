@@ -34,6 +34,9 @@ class Post(models.Model):
 
     def get_like_count(self):
         return self.likes.count()
+    
+    def get_comment_count(self):
+        return self.comments.count()
 
 class Like(models.Model):
     post = models.ForeignKey(

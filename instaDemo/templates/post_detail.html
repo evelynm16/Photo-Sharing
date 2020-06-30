@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load custom_tags %}
+
 {% block content %}
 
 <div class="row single-post">
@@ -11,12 +13,16 @@
                 {% endif %}
                 {{ object.author.username }}
             </a>
+            
         </div>
+    
         <div class="image__wrapper">
             <img class="card__main-image" src="/{{object.image.url}}" width='1000', height='1000'>
         </div>
+        
         <div class="comments-portion">
             <div class="likes-timestamp-row">
+                
                 <div class="likes">
                     {% if object.get_like_count %}
                         {{ object.get_like_count }} like{% if object.get_like_count > 1 %}s{% endif %}
@@ -37,7 +43,7 @@
                 {% endfor %}
             </ul>
             <section class="input-row">
-                <i class="fa {% if liked %}fa-heart{% else %}fa-heart-o{% endif %} submit-like" aria-hidden="true"></i>
+                <i class="fa {% has_user_liked_post post user%} submit-like" aria-hihhen="true"></i>
                 <div class="comment-input-wrapper">
                     <input class="add-comment" type="text" placeholder="Add a comment...">
                 </div>
