@@ -28,10 +28,31 @@
                             {{ post.get_like_count }} like{% if post.get_like_count > 1 %}s{% endif %}
                         {% endif %}
                     </div>
+                    <section class="input-row">
+                        <i class="fa fa-heart-o submit-like" aria-hihhen="true"></i>
+                    </section> 
+
+                    <ul class="comment-list">
+                        <a class="view-more"></a>
+                        {% for comment in post.comments.all %}
+                        <li class="comment-list__comment">
+                            <a href="{% url 'helloWorld' %}" class="user">
+                                {{ comment.user.username }}
+                            </a>
+                            <span class="comment">{{ comment.comment }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <section class="input-row">
+                        <div class="comment-input-wrapper">
+                            <input class="add-comment" type="text" placeholder="Add a comment...">
+                        </div>
+                        <div class="hidden-data {{ post.pk }}" style="display: none;">
+                            <span class="post-pk">{{ post.pk }}</span>
+                        </div>
+                    </section>   
                 </div>
-                <section class="input-row">
-                    <i class="fa fa-heart-o submit-like" aria-hihhen="true"></i>
-                </section>    
+                
                     
             </div>
         </div>
