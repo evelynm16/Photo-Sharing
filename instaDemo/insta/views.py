@@ -2,10 +2,10 @@ from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
-from insta.models import Post
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-# 让自定义helloWorld view 继承了template view，就可以用templateView里的很多func和attribute
-#view 里即需要templeta也需要model
+from insta.models import Post
+from insta.forms import CustomUserCreationForm
 
 class HelloWorld(TemplateView):
     template_name = 'test.html'
@@ -18,10 +18,11 @@ class PostDetailView(DetailView):
     model = Post
     template_name = 'post_detail.html'
 
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     template_name = 'post_create.html'
     fields = '__all__'
+    login_url = 'login'
 
 class PostUpdateView(UpdateView):
     model = Post
@@ -32,3 +33,8 @@ class PostDeleteView(DeleteView):
     model = Post
     template_name = 'post_delete.html'
     success_url = reverse_lazy("posts")
+
+class SignUp(CreateView):
+    form_class = CustomUserCreationForm
+    success_url = reverse_lazy('login')
+    template_name = 'signup.html'
