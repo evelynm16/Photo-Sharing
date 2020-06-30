@@ -12,3 +12,7 @@ def has_user_liked_post(post, user):
         return "fa-heart"
     except:
         return "fa-heart-o"
+
+@register.simple_tag
+def is_following(current_user, background_user):
+    return background_user.get_followers().filter(creator=current_user).exists()
