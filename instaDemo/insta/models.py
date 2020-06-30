@@ -13,6 +13,21 @@ class InstaUser(AbstractUser):
         null=True,
         blank=True,
         )
+
+    def get_connections(self):
+        connections = UserConnection.objects.filter(creator=self)
+        return connections
+    
+    def get_followers(self):
+        followers = UserConnection.objects.filter(following=self)
+        return followers
+    
+    def is_followed_by(self, user):
+        followers = UserConnection.objects.filter(following=self)
+        return followers.filter(creator=user).exist()
+
+    def __str__(self):
+        return self.username
         
 class Post(models.Model):
     author = models.ForeignKey(
@@ -73,4 +88,18 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.comment    
-    
+
+class UserConnection(models.Model):
+    creator = models.ForeignKey(
+        InstaUser,
+        on_delete = models.CASCADE,
+        related_name ='friendship_creator_set'
+        )  
+    following = models.ForeignKey(
+        InstaUser,
+        on_delete = models.CASCADE,
+        related_name = 'friend_set'
+        )
+
+    def __str__(self):
+        return self.creator.username + ' follows ' + self.following.username
