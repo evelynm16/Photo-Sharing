@@ -8,12 +8,12 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if request.user.is_authenticated %}
                     <li>
-                        <a href="{% url 'posts' %}">
+                        <a href="{% url 'recommend' %}">
                             <i class="fa fa-home" aria-hidden="true"></i>
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'helloWorld' %}">
+                        <a href="{% url 'posts' %}">
                         <i class="fa fa-search" aria-hidden="true"></i>
                         </a>
                     </li>

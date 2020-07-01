@@ -39,20 +39,24 @@
                         </li>
                     </div>
                     <div class="col-xs-4">
-                        <li class="stats__count">
-                            <span class="follower_count" id="follower_id">{{ object.get_followers.count }}</span><br> followers
-                        </li>
-                        
+                        <a href="{% url 'followers' object.id %}" style="text-decoration: none; color: black;">
+                            <li class="stats__count">
+                                <span class="follower_count" id="follower_id">{{ object.get_followers.count }}</span><br> followers
+                            </li>
+                        </a>
                     </div>
                     <div class="col-xs-4">
-                        <li class="stats__count">
-                            <span>{{ object.get_connections.count }}</span><br> following
-                        </li>
+                        <a href="{% url 'followings' object.id %}" style="text-decoration: none; color: black;">    
+                            <li class="stats__count">
+                                <span>{{ object.get_connections.count }}</span><br> following
+                            </li>
+                        </a>
                     </div>
                 </ul>
             </div>
         </div>
-
+       
+    </div>
         <div class="profile_body">
             <div class="row">
                 {% for post in object.my_posts.all %}
@@ -69,9 +73,6 @@
                 {% endfor %}
             </div>
         </div>
-
-       
-    </div>
 </div>
 
 

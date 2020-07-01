@@ -7,7 +7,7 @@
 <div class="row single-post">
     <div class="single-post-card view-update {{ object.pk }}">
         <div class="header">
-            <a href="{% url 'helloWorld' %}">
+            <a href="{% url 'user_detail' object.author.pk %}">
                 {% if object.author.profile_pic %}
                     <img class="picture-circle--medium" src="/{{object.author.profile_pic.url}}">
                 {% endif %}
@@ -17,7 +17,7 @@
         </div>
     
         <div class="image__wrapper">
-            <img class="card__main-image" src="/{{object.image.url}}" width='1000', height='1000'>
+            <img class="card__main-image" src="/{{object.image.url}}" >
         </div>
         
         <div class="comments-portion">
@@ -28,14 +28,11 @@
                         {{ object.get_like_count }} like{% if object.get_like_count > 1 %}s{% endif %}
                     {% endif %}
                 </div>
-                <div class="timestamp">
-                    {{ object.posted_on|timesince }}
-                </div>
             </div>
             <ul class="comment-list">
                 {% for comment in object.comments.all %}
                 <li class="comment-list__comment">
-                    <a href="{% url 'helloWorld' %}" class="user">
+                    <a href="{% url 'user_detail' comment.user.pk%}" class="user">
                         {{ comment.user.username }}
                     </a>
                     <span class="comment">{{ comment.comment }}</span>

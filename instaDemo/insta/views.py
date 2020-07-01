@@ -1,3 +1,4 @@
+from django.http import HttpResponse, HttpResponseRedirect
 from annoying.decorators import ajax_request
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -7,13 +8,31 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from insta.models import Post, Like, Comment, InstaUser, UserConnection
 from insta.forms import CustomUserCreationForm
+from instaDemo import settings
 
 class HelloWorld(TemplateView):
     template_name = 'test.html'
 
+class UserRecommendView(ListView):
+    model = InstaUser
+    template_name = 'user_recommend.html'
+    login_url = "login"
+
 class PostView(ListView):
     model = Post
     template_name = 'index.html'
+    login_url = "login"
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return 
+
+        current_user = self.request.user
+        following = set()
+        for conn in UserConnection.objects.filter(
+                creator=current_user).select_related('following'):
+            following.add(conn.following)
+        return Post.objects.filter(author__in=following)
 
 class PostDetailView(DetailView):
     model = Post
@@ -24,6 +43,10 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     template_name = 'post_create.html'
     fields = '__all__'
     login_url = 'login'
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
 class PostUpdateView(UpdateView):
     model = Post
@@ -50,6 +73,34 @@ class EditProfileView(LoginRequiredMixin, UpdateView):
     fields = ['profile_pic', 'username']
     login_url = 'login'
     success_url = reverse_lazy("posts")
+
+class FollowersView(ListView):
+    model = InstaUser
+    template_name = 'followers.html'
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return 
+
+        current_user = self.kwargs['pk']
+        following = set()
+        for conn in UserConnection.objects.filter(following=current_user).select_related('creator'):
+            following.add(conn.creator)
+        return InstaUser.objects.filter(username__in=following)
+
+class FollowingsView(ListView):
+    model = InstaUser
+    template_name = 'followings.html'
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return 
+
+        current_user = self.kwargs['pk']
+        following = set()
+        for conn in UserConnection.objects.filter(creator=current_user).select_related('following'):
+            following.add(conn.following)
+        return InstaUser.objects.filter(username__in=following)
 
 @ajax_request
 def addLike(request):

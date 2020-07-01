@@ -15,11 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from insta.views import (HelloWorld, PostView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView, addLike, addComment, UserDetailView, EditProfileView, toggleFollow)
+from insta.views import (HelloWorld, PostView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView, addLike, addComment, UserDetailView, EditProfileView, toggleFollow, FollowersView, FollowingsView, UserRecommendView)
 
 urlpatterns = [
-    path('', HelloWorld.as_view(), name='helloWorld'),
-    path('posts/', PostView.as_view(), name='posts'),
+    path('helloworld', HelloWorld.as_view(), name='helloWorld'),
+    path('', PostView.as_view(), name='posts'),
     path('post/<int:pk>', PostDetailView.as_view(), name='post_detail'),
     path('post/new/', PostCreateView.as_view(), name='make_post'),
     path('post/update/<int:pk>', PostUpdateView.as_view(), name ='post_update'),
@@ -28,5 +28,8 @@ urlpatterns = [
     path('comment', addComment, name='addComment'),
     path('user/<int:pk>', UserDetailView.as_view(), name='user_detail'),
     path('user/update/<int:pk>', EditProfileView.as_view(), name="edit_profile"),
-    path('togglefollow', toggleFollow, name='togglefollow')
+    path('togglefollow', toggleFollow, name='togglefollow'),
+    path('followers/<int:pk>', FollowersView.as_view(), name = 'followers'),
+    path('followings/<int:pk>', FollowingsView.as_view(), name = 'followings'),
+    path('recommend', UserRecommendView.as_view(), name ='recommend'),
 ]
