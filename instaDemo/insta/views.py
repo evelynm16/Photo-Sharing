@@ -18,7 +18,7 @@ class UserRecommendView(ListView):
     template_name = 'user_recommend.html'
     login_url = "login"
 
-class PostView(ListView):
+class PostView(LoginRequiredMixin,ListView):
     model = Post
     template_name = 'index.html'
     login_url = "login"

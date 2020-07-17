@@ -5,6 +5,7 @@
 {% block content %}
 
 <div class="cards-listing">
+    <h4>Recommend users</h4>
     {% for user in object_list %}
         <div class="cards-listing">
         {% for post in user.my_posts.all %}
