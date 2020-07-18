@@ -132,3 +132,5 @@ LOGIN_REDIRECT_URL = 'recommend'
 LOGOUT_REDIRECT_URL = 'posts'
 
 AUTH_USER_MODEL = 'insta.InstaUser'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
